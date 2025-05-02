@@ -23,13 +23,16 @@ public class UsuarioService {
             throw new UserAlreadyExistsException();
         }
 
-        Usuario usuario = mapper.requestDtoToEntity(dto);
+        Usuario usuario = new Usuario();
+        usuario.setUsername(dto.username());
+        usuario.setEmail(dto.email());
         usuario.setSenha(passwordEncoder.encode(dto.senha()));
+        usuario.setRole(dto.role());
         repository.save(usuario);
     }
 
     public Usuario findByLogin(String login) {
-        return repository.findByEmail(login).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+        return repository.findByUsername(login).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
     }
 
 }
