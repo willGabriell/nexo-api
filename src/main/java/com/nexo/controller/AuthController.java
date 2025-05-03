@@ -1,13 +1,16 @@
 package com.nexo.controller;
 
 import com.nexo.dto.auth.AuthenticationDto;
+import com.nexo.dto.auth.LoginResponseDto;
 import com.nexo.dto.usuario.UsuarioRequestDto;
+import com.nexo.service.TokenService;
 import com.nexo.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +23,16 @@ public class AuthController {
 
     private final AuthenticationManager authManager;
     private final UsuarioService usuarioService;
+    private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationDto dto) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody AuthenticationDto dto) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(dto.username(), dto.senha());
         var authentication = authManager.authenticate(authenticationToken);
-        return ResponseEntity.ok().build();
+
+        var token = tokenService.generateToken((User) authentication.getPrincipal());
+
+        return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDto(token));
     }
 
     @PostMapping("/register")
