@@ -5,6 +5,7 @@ import com.nexo.dto.auth.LoginResponseDto;
 import com.nexo.dto.usuario.UsuarioRequestDto;
 import com.nexo.service.TokenService;
 import com.nexo.service.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody UsuarioRequestDto dto) {
+    public ResponseEntity register(@RequestBody @Valid UsuarioRequestDto dto) {
         usuarioService.cadastrarUsuario(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

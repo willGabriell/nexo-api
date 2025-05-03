@@ -23,6 +23,10 @@ public class UsuarioService {
             throw new UserAlreadyExistsException();
         }
 
+        if (repository.existsByUsername(dto.username())) {
+            throw new UserAlreadyExistsException("Usuário já existe");
+        }
+
         Usuario usuario = new Usuario();
         usuario.setUsername(dto.username());
         usuario.setEmail(dto.email());
