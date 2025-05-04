@@ -1,4 +1,4 @@
-package com.nexo.config;
+package com.nexo.config.security;
 
 import com.nexo.model.Usuario;
 import com.nexo.service.UsuarioService;

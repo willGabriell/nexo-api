@@ -1,6 +1,5 @@
-package com.nexo.config;
+package com.nexo.config.security;
 
-import com.nexo.repository.UsuarioRepository;
 import com.nexo.service.TokenService;
 import com.nexo.service.UsuarioService;
 import jakarta.servlet.FilterChain;
@@ -8,7 +7,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
