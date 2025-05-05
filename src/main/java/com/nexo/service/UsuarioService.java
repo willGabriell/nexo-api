@@ -26,13 +26,16 @@ public class UsuarioService {
         if (repository.existsByUsername(dto.username())) {
             throw new UserAlreadyExistsException("Usuário já existe");
         }
-
         Usuario usuario = new Usuario();
         usuario.setUsername(dto.username());
         usuario.setEmail(dto.email());
         usuario.setSenha(passwordEncoder.encode(dto.senha()));
         usuario.setRole(dto.role());
         repository.save(usuario);
+    }
+
+    public Usuario findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
     }
 
     public Usuario findByLogin(String login) {
