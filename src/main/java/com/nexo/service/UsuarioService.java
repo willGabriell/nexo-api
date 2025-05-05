@@ -20,7 +20,7 @@ public class UsuarioService {
 
     public void cadastrarUsuario(UsuarioRequestDto dto) {
         if(repository.existsByEmail(dto.email())) {
-            throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistsException("Email já cadastrado");
         }
 
         if (repository.existsByUsername(dto.username())) {
