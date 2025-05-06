@@ -38,15 +38,6 @@ public class CategoriaService {
                 .toList();
     }
 
-    public List<CategoriaResponseDto> listarCategoriasDoUsuarioTeste(Long id) {
-
-        List<Categoria> lista = repository.findAllByUsuario(usuarioService.findById(id));
-        List<CategoriaResponseDto> resultado = categoriaMapper.toDto(lista);
-        return lista.stream()
-                .map(c -> new CategoriaResponseDto(c.getId(), c.getNome()))
-                .toList();
-    }
-
     public void excluirCategoria(Long id) {
         Categoria categoria = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada"));
         repository.delete(categoria);

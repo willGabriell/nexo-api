@@ -33,11 +33,6 @@ public class CategoriaController {
         return ResponseEntity.ok(service.listarCategoriasDoUsuario(user));
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<List<CategoriaResponseDto>> listarCategoriasTeste(@PathVariable Long id) {
-        return ResponseEntity.ok(service.listarCategoriasDoUsuarioTeste(id));
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirCategoria(@PathVariable Long id) {
         service.excluirCategoria(id);
