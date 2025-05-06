@@ -4,9 +4,11 @@ import com.nexo.dto.categoria.CategoriaRequestDto;
 import com.nexo.dto.categoria.CategoriaResponseDto;
 import com.nexo.mapper.CategoriaMapper;
 import com.nexo.model.Categoria;
+import com.nexo.model.Usuario;
 import com.nexo.repository.CategoriaRepository;
 import com.nexo.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,14 +27,24 @@ public class CategoriaService {
         repository.save(categoria);
     }
 
-    public List<CategoriaResponseDto> listarCategoriasDoUsuario(Long usuarioId) {
+    public List<CategoriaResponseDto> listarCategoriasDoUsuario(Usuario usuario) {
 
-        if (!usuarioRepository.existsById(usuarioId)) {
-            throw new IllegalArgumentException("Usuário não encontrado");
-        }
+        Usuario user = usuarioRepository.findByUsername(usuario.getUsername()).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-        List<Categoria> lista = repository.findAllByUsuario(usuarioService.findById(usuarioId));
-        return categoriaMapper.toDto(lista);
+        List<Categoria> lista = repository.findAllByUsuario(user);
+        List<CategoriaResponseDto> resultado = categoriaMapper.toDto(lista);
+        return lista.stream()
+                .map(c -> new CategoriaResponseDto(c.getId(), c.getNome()))
+                .toList();
+    }
+
+    public List<CategoriaResponseDto> listarCategoriasDoUsuarioTeste(Long id) {
+
+        List<Categoria> lista = repository.findAllByUsuario(usuarioService.findById(id));
+        List<CategoriaResponseDto> resultado = categoriaMapper.toDto(lista);
+        return lista.stream()
+                .map(c -> new CategoriaResponseDto(c.getId(), c.getNome()))
+                .toList();
     }
 
     public void excluirCategoria(Long id) {

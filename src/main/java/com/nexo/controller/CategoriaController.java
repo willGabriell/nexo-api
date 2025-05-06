@@ -3,11 +3,14 @@ package com.nexo.controller;
 import com.nexo.dto.categoria.CategoriaRequestDto;
 import com.nexo.dto.categoria.CategoriaResponseDto;
 import com.nexo.model.Categoria;
+import com.nexo.model.Usuario;
 import com.nexo.service.CategoriaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +28,14 @@ public class CategoriaController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{usuarioId}")
-    public ResponseEntity<List<CategoriaResponseDto>> listarCategorias(@PathVariable @Valid Long usuarioId) {
-        return ResponseEntity.ok(service.listarCategoriasDoUsuario(usuarioId));
+    @GetMapping
+    public ResponseEntity<List<CategoriaResponseDto>> listarCategorias(@AuthenticationPrincipal Usuario user) {
+        return ResponseEntity.ok(service.listarCategoriasDoUsuario(user));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<List<CategoriaResponseDto>> listarCategoriasTeste(@PathVariable Long id) {
+        return ResponseEntity.ok(service.listarCategoriasDoUsuarioTeste(id));
     }
 
     @DeleteMapping("/{id}")

@@ -34,12 +34,11 @@ public class TokenService {
     public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            JWT.require(algorithm)
+            return JWT.require(algorithm)
                     .withIssuer("nexo")
                     .build()
                     .verify(token)
                     .getSubject();
-            return token;
         } catch (JWTVerificationException e) {
             return "";
         }
