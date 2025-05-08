@@ -23,8 +23,8 @@ public class CategoriaController {
     private final CategoriaService service;
 
     @PostMapping
-    public ResponseEntity<Void> cadastrarCategoria(@RequestBody @Valid CategoriaRequestDto dto) {
-        service.cadastrarCategoria(dto);
+    public ResponseEntity<Void> cadastrarCategoria(@RequestBody @Valid CategoriaRequestDto dto, @AuthenticationPrincipal Usuario user) {
+        service.cadastrarCategoria(dto, user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

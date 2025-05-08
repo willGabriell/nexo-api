@@ -22,8 +22,8 @@ public class CategoriaService {
     private final UsuarioRepository usuarioRepository;
     private final CategoriaMapper categoriaMapper;
 
-    public void cadastrarCategoria(CategoriaRequestDto dto) {
-        Categoria categoria = new Categoria(dto.nome(), usuarioService.findById(dto.usuarioId()));
+    public void cadastrarCategoria(CategoriaRequestDto dto, Usuario user) {
+        Categoria categoria = new Categoria(dto.nome(),user);
         repository.save(categoria);
     }
 
