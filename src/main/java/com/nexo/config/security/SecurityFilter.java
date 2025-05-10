@@ -27,9 +27,17 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = recoverToken(request);
         if (token != null) {
-            var login = tokenService.validateToken(token);
-            UserDetails user = usuarioService.findByLogin(login);
+            if (tokenService.isTokenExpired(token)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\": \"Token Expirado, Faça seu Login Novamente\"}");
+                response.getWriter().flush();
+                return;
+            }
 
+            var login = tokenService.validateToken(token);
+
+            UserDetails user = usuarioService.findByLogin(login);
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
