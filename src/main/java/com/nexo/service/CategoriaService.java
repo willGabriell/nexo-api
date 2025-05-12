@@ -49,4 +49,8 @@ public class CategoriaService {
         repository.save(categoria);
     }
 
+    public Categoria buscarCategoriaPorId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada"));
+    }
+
 }
